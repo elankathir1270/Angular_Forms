@@ -201,3 +201,7 @@ input.ng-pending {
 .container.PENDING {
   border: orange 3px solid;
 }
+.amount-box {
+  display: flex;
+  flex-direction: column;
+}
