@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" [ngClass]="formStatus">
   <header>Registration Form</header>
 
   <form class="form" [formGroup]="reactiveForm" (ngSubmit)="OnFormSubmit()">
@@ -11,22 +11,38 @@
         />
         <small
           *ngIf="
-            reactiveForm.get('firstname').invalid &&
+            reactiveForm.get('firstname').errors?.['required'] &&
             reactiveForm.get('firstname').touched
           "
           class="small"
           >*First name is required field</small
+        >
+        <small
+          *ngIf="
+            reactiveForm.get('firstname').errors?.['noSpaceAllowed'] &&
+            reactiveForm.get('firstname').touched
+          "
+          class="small"
+          >*No space is allowed for first name</small
         >
       </div>
       <div class="input-box">
         <input type="text" placeholder="Last Name" formControlName="lastname" />
         <small
           *ngIf="
-            reactiveForm.get('lastname').invalid &&
+            reactiveForm.get('lastname').errors?.['required'] &&
             reactiveForm.get('lastname').touched
           "
           class="small"
           >*Last name is required field</small
+        >
+        <small
+          *ngIf="
+            reactiveForm.get('lastname').errors?.['noSpaceAllowed'] &&
+            reactiveForm.get('lastname').touched
+          "
+          class="small"
+          >*No space is allowed for last name</small
         >
       </div>
     </div>
@@ -45,7 +61,18 @@
     <div class="column">
       <div class="input-box">
         <input type="text" placeholder="username" formControlName="username" />
-        <button class="btn-gen-username" type="button">
+        <button
+          class="btn-gen-username"
+          type="button"
+          [disabled]="
+            !(
+              reactiveForm.get('firstname').value &&
+              reactiveForm.get('lastname').value &&
+              reactiveForm.get('dob').value
+            )
+          "
+          (click)="generateUsername()"
+        >
           Create a Username
         </button>
       </div>
@@ -151,7 +178,9 @@
         "
       >
         <input type="text" placeholder="Add Skill..." [formControlName]="i" />
-        <button type="button" class="btn-add-delete">Delete</button>
+        <button type="button" class="btn-add-delete" (click)="deleteSkill(i)">
+          Delete
+        </button>
       </div>
     </div>
     <button type="button" class="btn-add-delete" (click)="addSkills()">
@@ -159,13 +188,24 @@
     </button>
 
     <!--HTML for Experience Form Array -->
-    <div class="input-box">
-      <div class="experience">
-        <label>Experience</label>
-        <input type="text" placeholder="Company Name" />
+    <div class="input-box" formArrayName="experience">
+      <div
+        class="experience"
+        *ngFor="
+          let exp of reactiveForm.get('experience')['controls'];
+          let i = index
+        "
+        [formGroupName]="i"
+      >
+        <label>Experience {{ i + 1 }}</label>
+        <input
+          type="text"
+          placeholder="Company Name"
+          formControlName="company"
+        />
         <div class="column">
           <div class="select-box">
-            <select>
+            <select formControlName="position">
               <option hidden>Position</option>
               <option>Junior Developer</option>
               <option>Software Developer</option>
@@ -173,26 +213,35 @@
               <option>Team Lead</option>
             </select>
           </div>
-          <input type="number" placeholder="Experience" />
+          <input
+            type="number"
+            placeholder="Experience"
+            formControlName="totalExp"
+          />
         </div>
         <div class="column">
-          <input type="date" placeholder="Start Date" />
-          <input type="date" placeholder="End Date" />
+          <input type="date" placeholder="Start Date" formControlName="start" />
+          <input type="date" placeholder="End Date" formControlName="end" />
         </div>
-        <button type="button" class="btn-add-delete">Delete Experience</button>
+        <button
+          type="button"
+          class="btn-add-delete"
+          (click)="deleteExperience(i)"
+        >
+          Delete Experience
+        </button>
       </div>
     </div>
-    <button type="button" class="btn-add-delete">Add Experience</button>
 
-    <input
-      type="submit"
-      value="Submit"
-      class="submit-btn"
-      [disabled]="!reactiveForm.valid"
-    />
+    <button type="button" class="btn-add-delete" (click)="addExperience()">
+      Add Experience
+    </button>
+
+    <input type="submit" value="Submit" class="submit-btn" />
   </form>
 </section>
 
+<!-- [disabled]="!reactiveForm.valid"                -->
 <!--uncomment below HTML for displaying form data-->
 
 <!-- <section class="user-detail-container">
