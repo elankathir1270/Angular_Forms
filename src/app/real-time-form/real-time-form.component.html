@@ -1,0 +1,66 @@
+<div class="container my-5">
+  <div class="p-fluid p-formgrid p-grid">
+    <form (ngSubmit)="onSubmit()" [formGroup]="realTimeForm">
+      <ng-container>
+        <div class="row">
+          <div class="col-6">
+            <div class="p-field">
+              <label for="vaesselName"> Vessel Name</label>
+              <input
+                id="vaesselName"
+                type="text"
+                pInputText
+                formControlName="vesselName"
+              />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="p-field">
+              <label for="eta">ETA</label>
+              <p-calendar
+                formControlName="eta"
+                dataType="date"
+                dateFormat="dd/mm"
+                [showTime]="true"
+                [showIcon]="true"
+                [style]="{ width: '100%' }"
+              ></p-calendar>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
+            <label for="exchangeRate"> Exchange Rate</label>
+            <input
+              id="exchangeRate"
+              type="text"
+              pInputText
+              formControlName="exchangeRate"
+            />
+          </div>
+          <div class="col-4">
+            <label for="vaesselLocation"> Vessel Location</label>
+            <input
+              id="vesselLocation"
+              type="text"
+              pInputText
+              formControlName="vesselLocation"
+            />
+          </div>
+          <div class="col-4">
+            <label for="orderConformationDate">Order Confirmation Date</label>
+            <p-calendar
+              formControlName="orderConformationDate"
+              dataType="date"
+              dateFormat="dd/mm"
+              [showTime]="true"
+              [showIcon]="true"
+              [style]="{ width: '100%' }"
+            ></p-calendar>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+</div>
