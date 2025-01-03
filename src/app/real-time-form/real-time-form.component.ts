@@ -9,6 +9,15 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./real-time-form.component.css'],
 })
 export class RealTimeFormComponent implements OnInit {
+  itemStatusOptions = [
+    { id: '1', name: 'RECEIVED' },
+    { id: '2', name: 'PACKED' },
+  ];
+  deliveryToOptions = [
+    { id: '1', name: 'SELF COLLECTION' },
+    { id: '2', name: 'DIRECT DELIVERY' },
+    { id: '3', name: 'DELIVER AT WAREHOUSE' },
+  ];
   constructor(
     private realTimeService: RealTimeService,
     private router: Router,
@@ -28,6 +37,7 @@ export class RealTimeFormComponent implements OnInit {
         discountForVessel: new FormControl(null),
       }),
     ]),
+    compliment: new FormControl({ value: null, disabled: true }),
     othersParty: new FormControl({ value: null, disabled: true }),
     agentDetail: new FormControl({ value: null, disabled: true }),
     boat: new FormControl({ value: null, disabled: true }),
@@ -50,8 +60,16 @@ export class RealTimeFormComponent implements OnInit {
     ]),
     approximatePlt: new FormControl(null),
     totalPlt: new FormControl(null),
+    profit: new FormControl({ value: null, disabled: true }),
     remarks: new FormControl(null),
   });
+
+  get discountDetail() {
+    return this.realTimeForm.controls['discountDetail'] as FormArray;
+  }
+  get othersTabSupplierDetail() {
+    return this.realTimeForm.controls['othersTabSupplierDetail'] as FormArray;
+  }
   ngOnInit() {}
 
   onSubmit() {}
