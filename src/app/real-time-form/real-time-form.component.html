@@ -1,6 +1,7 @@
 <div class="container my-5">
   <div class="p-fluid p-formgrid p-grid">
     <form (ngSubmit)="onSubmit()" [formGroup]="realTimeForm">
+      <h4 class="header mb-5 col-12">QUOTATION DETAILS</h4>
       <ng-container>
         <div class="row">
           <div class="col-6">
@@ -61,6 +62,292 @@
           </div>
         </div>
       </ng-container>
+      <div formArrayName="discountDetail" class="mt-3 field col-12">
+        <p-table
+          #discountDt
+          [value]="discountDetail.controls"
+          dataKey="id"
+          showGridlines
+          [tableStyle]="{ 'min-width': '50rem' }"
+          responsiveLayout="scroll"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-color-secondary">SL NO.</th>
+              <th class="text-color-secondary">DEPARTMENT NAME</th>
+              <th class="text-color-secondary">DISCOUNT FOR OFFICE</th>
+              <th class="text-color-secondary">DISCOUNT FOR VESSEL</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-department let-i="rowIndex">
+            <tr [formGroupName]="i">
+              <td class="text-color-secondary">
+                {{ i + 1 }}
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="department"
+                  type="text"
+                  formControlName="department"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="discountForOffice"
+                  type="text"
+                  formControlName="discountForOffice"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="discountForVessel"
+                  type="text"
+                  formControlName="discountForVessel"
+                />
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="mt-3 field col-12">
+        <label class="text-color-secondary">Compliment</label>
+        <div>
+          <textarea
+            pInputTextarea
+            formControlName="compliment"
+            [class]="'w-full'"
+            [rows]="3"
+          ></textarea>
+        </div>
+      </div>
+      <h4 class="header mt-5 mb-3 col-12">OPERATION DETAILS</h4>
+      <div class="row mt-3">
+        <div class="col-4">
+          <label for="othersParty">Other Party</label>
+          <input
+            id="othersParty"
+            type="text"
+            pInputText
+            formControlName="othersParty"
+          />
+        </div>
+        <div class="col-4">
+          <label for="agentDetail">Agent Detail</label>
+          <input
+            id="agentDetail"
+            type="text"
+            pInputText
+            formControlName="agentDetail"
+          />
+        </div>
+        <div class="col-4">
+          <label for="boat">Boat</label>
+          <input id="boat" type="text" pInputText formControlName="boat" />
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-4">
+          <label for="loadingLocation">Loading Location</label>
+          <input
+            id="loadingLocation"
+            type="text"
+            pInputText
+            formControlName="loadingLocation"
+          />
+        </div>
+        <div class="col-4">
+          <label for="loadingDate">Loading Date</label>
+          <p-calendar
+            formControlName="loadingDate"
+            dataType="date"
+            dateFormat="dd/mm"
+            [showTime]="true"
+            [showIcon]="true"
+            [style]="{ width: '100%' }"
+          ></p-calendar>
+        </div>
+        <div class="col-4">
+          <label for="deliveryThrough">Vessel Anchorage Location</label>
+          <input
+            id="deliveryThrough"
+            type="text"
+            pInputText
+            formControlName="deliveryThrough"
+          />
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-4">
+          <label for="boardingOfficer">Boarding Officer</label>
+          <input
+            id="boardingOfficer"
+            type="text"
+            pInputText
+            formControlName="boardingOfficer"
+          />
+        </div>
+        <div class="col-4">
+          <label for="noOfPermit">No of Permit</label>
+          <input
+            id="noOfPermit"
+            type="text"
+            pInputText
+            formControlName="noOfPermit"
+          />
+        </div>
+        <div class="col-4">
+          <label for="permitExpiryDate">Expiry Date</label>
+          <input
+            id="permitExpiryDate"
+            type="text"
+            pInputText
+            formControlName="permitExpiryDate"
+          />
+        </div>
+      </div>
+      <span class="mt-3 w-15 col-4 flex flex-row">
+        <p-checkbox
+          formControlName="permitChecked"
+          [binary]="true"
+          class="align-self-center"
+        ></p-checkbox>
+        <label class="align-self-center mx-2 mt-3" for="permitChecked">
+          Check Permit</label
+        >
+      </span>
+      <h4 class="header mt-5 mb-3 col-12">OTHERS TAB DETAILS</h4>
+      <div formArrayName="othersTabSupplierDetail" class="mt-3 field col-12">
+        <p-table
+          #othersTabDt
+          [value]="othersTabSupplierDetail.controls"
+          dataKey="id"
+          showGridlines
+          [tableStyle]="{ 'min-width': '50rem' }"
+          responsiveLayout="scroll"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-color-secondary">SL NO.</th>
+              <th class="text-color-secondary">SUPPLIER</th>
+              <th class="text-color-secondary">PAYMENT</th>
+              <th class="text-color-secondary">DELIVERY TO</th>
+              <th class="text-color-secondary">PALLETS</th>
+              <th class="text-color-secondary">INVOICES</th>
+              <th class="text-color-secondary">ITEM STATUS</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-supplier let-i="rowIndex">
+            <tr [formGroupName]="i">
+              <td class="text-color-secondary">
+                {{ i + 1 }}
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="supplierName"
+                  type="text"
+                  formControlName="supplierName"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="supplierAmount"
+                  type="text"
+                  formControlName="supplierAmount"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <p-dropdown
+                  [options]="deliveryToOptions"
+                  optionValue="id"
+                  optionLabel="name"
+                  formControlName="deliveryTo"
+                  placeholder="Select Delivery To"
+                  [style]="{ width: '100%' }"
+                  appendTo="body"
+                >
+                </p-dropdown>
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="pallets"
+                  type="text"
+                  formControlName="pallets"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <input
+                  pInputText
+                  id="numberOfInvoice"
+                  type="text"
+                  formControlName="numberOfInvoice"
+                />
+              </td>
+              <td class="text-color-secondary">
+                <p-dropdown
+                  [options]="itemStatusOptions"
+                  optionValue="id"
+                  optionLabel="name"
+                  formControlName="itemStatus"
+                  placeholder="Select Item Status"
+                  [style]="{ width: '100%' }"
+                  appendTo="body"
+                >
+                </p-dropdown>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="row mt-3">
+        <div class="col-4">
+          <label for="loadingLocation">Approximate Pallets</label>
+          <input
+            id="approximatePlt"
+            type="text"
+            pInputText
+            formControlName="approximatePlt"
+          />
+        </div>
+        <div class="col-4">
+          <label for="loadingDate">Total Pallets</label>
+          <input
+            id="totalPlt"
+            type="text"
+            pInputText
+            formControlName="totalPlt"
+          />
+        </div>
+        <div class="col-4">
+          <label for="deliveryThrough">Profit</label>
+          <input id="profit" type="text" pInputText formControlName="profit" />
+        </div>
+      </div>
+      <div class="mt-3 field col-6">
+        <label for="remarks">remarks</label>
+
+        <textarea
+          pInputTextarea
+          formErrorMessage
+          id="remarks"
+          [class]="'w-full'"
+          formControlName="remarks"
+          [rows]="3"
+        ></textarea>
+      </div>
+      <div class="flex flex-row justify-content-end mt-3">
+        <button
+          pButton
+          [label]="'Update'"
+          class="p-button rc-button-md"
+          [disabled]="realTimeForm.invalid"
+        ></button>
+      </div>
     </form>
   </div>
 </div>
