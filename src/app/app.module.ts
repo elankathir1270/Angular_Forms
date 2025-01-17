@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RealTimeListComponent } from './real-time-list/real-time-list.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     TdFormComponent,
     ReactiveFormComponent,
     RealTimeFormComponent,
+    RealTimeListComponent,
   ],
   imports: [
     BrowserModule,
