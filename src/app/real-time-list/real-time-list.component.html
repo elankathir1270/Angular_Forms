@@ -1,0 +1,24 @@
+<div class="container my-5">
+  <p-table [value]="realTimeList" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <td>Id</td>
+        <td>Vessel Name</td>
+        <td>Vessel Position</td>
+        <td>ETA</td>
+        <td>Actions</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-list>
+      <tr>
+        <td>{{ list.id }}</td>
+        <td>{{ list.vesselName }}</td>
+        <td>{{ list.vesselPosition.name }}</td>
+        <td>{{ list.eta | date : "dd/MM HHmm" }}</td>
+        <td>
+          <p-button label="Edit" (onClick)="update(list.id)" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

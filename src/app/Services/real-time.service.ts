@@ -281,8 +281,12 @@ export class RealTimeService {
 
   constructor() {}
 
-  getDbData(id: number) {
-    const data: DbData = this.db.find((data) => data.id == id);
+  getAllDatas() {
+    return this.db;
+  }
+
+  getDbData(id: string) {
+    const data: DbData = this.db.find((data) => data.id == +id);
     return data;
   }
 }
