@@ -1,7 +1,17 @@
 <div class="container my-5">
   <div class="p-fluid p-formgrid p-grid">
     <form (ngSubmit)="onSubmit()" [formGroup]="realTimeForm">
-      <h4 class="header mb-5 col-12">QUOTATION DETAILS</h4>
+      <div class="flex flex-row justify-content-between mb-3 col-12">
+        <h4 class="header">QUOTATION DETAILS</h4>
+        <div [style]="{ width: 'fit-content' }">
+          <button
+            pButton
+            [label]="'back'"
+            routerLink="../"
+            class="p-button"
+          ></button>
+        </div>
+      </div>
       <ng-container>
         <div class="row">
           <div class="col-6">
