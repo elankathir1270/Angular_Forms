@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DbData } from '../Model/db-data.model';
+import { DbData, DbRequest } from '../Model/db-data.model';
 
 @Injectable({
   providedIn: 'root',
@@ -279,6 +279,8 @@ export class RealTimeService {
     },
   ];
 
+  orderSheetUpdates: DbRequest[] = [];
+
   constructor() {}
 
   getAllDatas() {
@@ -288,5 +290,21 @@ export class RealTimeService {
   getDbData(id: string) {
     const data: DbData = this.db.find((data) => data.id == +id);
     return data;
+  }
+
+  updateOrderSheet(id: string, payload: DbRequest): DbRequest[] {
+    if (id && payload) {
+      const alteredPayload = { id: id, ...payload };
+      const existingIndex = this.orderSheetUpdates.findIndex(
+        (update) => update.id == id
+      );
+
+      if (existingIndex !== -1) {
+        this.orderSheetUpdates[existingIndex] = alteredPayload;
+      } else {
+        this.orderSheetUpdates.push(alteredPayload);
+      }
+    }
+    return this.orderSheetUpdates;
   }
 }

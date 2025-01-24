@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { RealTimeService } from '../Services/real-time.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { DbData } from '../Model/db-data.model';
+import { DbData, DbRequest } from '../Model/db-data.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-real-time-form',
   templateUrl: './real-time-form.component.html',
   styleUrls: ['./real-time-form.component.css'],
+  providers: [MessageService, ConfirmationService],
 })
 export class RealTimeFormComponent implements OnInit {
   itemStatusOptions = [
@@ -20,10 +23,13 @@ export class RealTimeFormComponent implements OnInit {
     { id: '3', name: 'DELIVER AT WAREHOUSE' },
   ];
   orderSheet: DbData;
+  isFormSubmitted: boolean = false;
   constructor(
     private realTimeService: RealTimeService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   realTimeForm: FormGroup = new FormGroup({
@@ -107,12 +113,101 @@ export class RealTimeFormComponent implements OnInit {
     });
     this.setDiscountDetail(this.orderSheet);
     this.setOthersTabSupplierDetail(this.orderSheet);
-    console.log(this.orderSheet);
+    //console.log(this.orderSheet);
+  }
+
+  constructPayload(): DbRequest {
+    const cleanedDiscountDetail = this.discountDetail
+      .getRawValue()
+      .map((detail: any) => ({
+        department: detail.department,
+        discountForOffice: detail.discountForOffice.replace('%', ''),
+        discountForVessel: detail.discountForVessel.replace('%', ''),
+      }));
+
+    return {
+      discountDetail: cleanedDiscountDetail,
+      othersTabSupplierDetail: this.othersTabSupplierDetail.getRawValue(),
+      permitChecked: this.realTimeForm.getRawValue().permitChecked,
+      noOfPermit: this.realTimeForm.getRawValue().noOfPermit,
+      permitExpiryDate: this.realTimeForm.getRawValue().permitExpiryDate,
+      approximatePlt: this.realTimeForm.getRawValue().approximatePlt,
+      totalPlt: this.realTimeForm.getRawValue().totalPlt,
+      remarks: this.realTimeForm.getRawValue().remarks,
+    };
   }
 
   onSubmit() {
-    alert('Form successfully updated');
-    this.router.navigate(['../']);
+    this.isFormSubmitted = true;
+    const payload = this.constructPayload();
+    const orderSheetResponse = this.realTimeService.updateOrderSheet(
+      String(this.orderSheet.id),
+      payload
+    );
+    if (orderSheetResponse) {
+      console.log(orderSheetResponse);
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Form Submitted',
+        detail: 'Form successfully updated',
+      });
+
+      setTimeout(() => {
+        this.router.navigate(['../']);
+      }, 2000);
+    }
+  }
+
+  canExit(): Observable<boolean> {
+    if (!this.isFormSubmitted && this.realTimeForm.dirty) {
+      return new Observable<boolean>((observer) => {
+        this.confirmationService.confirm({
+          message:
+            'You have unsaved changes. Do you want to save before leaving?',
+
+          accept: () => {
+            console.log('Accepted changes');
+            this.saveFormData().subscribe(() => {
+              observer.next(true);
+              observer.complete();
+            });
+          },
+          reject: () => {
+            observer.next(true);
+            observer.complete();
+          },
+        });
+      });
+    }
+    return of(true);
+  }
+
+  saveFormData() {
+    return new Observable((observer) => {
+      const payload = this.constructPayload();
+      const orderSheetResponse = this.realTimeService.updateOrderSheet(
+        String(this.orderSheet.id),
+        payload
+      );
+      console.log('working');
+
+      if (orderSheetResponse) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Saved',
+          detail: 'Changes have been saved.',
+        });
+        setTimeout(() => observer.next(), 2000);
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong',
+        });
+        setTimeout(() => observer.error(), 2000);
+      }
+    });
   }
 
   setDiscountDetail(orderSheet: DbData) {
