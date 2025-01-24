@@ -16,6 +16,9 @@ import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RealTimeListComponent } from './real-time-list/real-time-list.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -38,8 +41,10 @@ import { RealTimeListComponent } from './real-time-list/real-time-list.component
     TableModule,
     InputTextareaModule,
     CheckboxModule,
+    ConfirmDialogModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

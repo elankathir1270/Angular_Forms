@@ -17,6 +17,11 @@ const routes: Routes = [
   {
     path: ':id',
     component: RealTimeFormComponent,
+    canDeactivate: [
+      (comp: RealTimeFormComponent) => {
+        return comp.canExit();
+      },
+    ],
     title: 'real-time-update',
   },
 ];

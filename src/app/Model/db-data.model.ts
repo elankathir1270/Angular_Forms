@@ -38,7 +38,7 @@ export interface Boat {
 }
 
 export interface DiscountDetail {
-  id: number;
+  id?: number;
   department: string;
   discountForOffice: number;
   discountForVessel: number;
@@ -52,7 +52,7 @@ export interface OthersParty {
 }
 
 export interface OthersTabSupplierDetail {
-  id: number;
+  id?: number;
   supplierName: string;
   numberOfInvoice?: string;
   itemStatus: ItemStatus;
@@ -77,6 +77,7 @@ export interface VesselPosition {
 }
 
 export interface DbRequest {
+  id?: string;
   discountDetail: DiscountDetail[];
   othersTabSupplierDetail: OthersTabSupplierDetail[];
   permitChecked: boolean;
